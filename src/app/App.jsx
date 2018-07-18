@@ -121,7 +121,7 @@ class App extends React.Component {
         loading: true
       };
     });
-    const payload = this.state; // need deep cloning here
+    const payload = JSON.parse(JSON.stringify(this.state)); // need deep cloning here
     const newItems = payload.items;
     for (let i = 0; i < newItems.length; i++) {
       newItems[i].unit_cost =
