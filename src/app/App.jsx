@@ -5,29 +5,31 @@ import 'semantic-ui-css/semantic.min.css';
 import Header from '../Modules/Header/component';
 import Items from '../Modules/ItemsList/component';
 
+const initialState = {
+  items: [
+    {
+      name: '',
+      quantity: 0,
+      unit_cost: 0
+    }
+  ],
+  date: moment(),
+  to: '',
+  currency: 'INR',
+  number: '',
+  tax: 12,
+  tax_title: 'CGST+IGST',
+  logo: 'http://invoiced.com/img/logo-invoice.png',
+  fields: {
+    tax: '%'
+  },
+  loading: false
+};
+
 class App extends React.Component {
   constructor() {
     super();
-    this.state = {
-      items: [
-        {
-          name: '',
-          quantity: 0,
-          unit_cost: 0
-        }
-      ],
-      date: moment(),
-      to: '',
-      currency: 'INR',
-      number: '',
-      tax: 12,
-      tax_title: 'CGST+IGST',
-      logo: 'http://invoiced.com/img/logo-invoice.png',
-      fields: {
-        tax: '%'
-      },
-      loading: false
-    };
+    this.state = initialState;
   }
 
   handleAddFiled = () => {
@@ -119,7 +121,7 @@ class App extends React.Component {
         loading: true
       };
     });
-    const payload = this.state;
+    const payload = this.state; // need deep cloning here
     const newItems = payload.items;
     for (let i = 0; i < newItems.length; i++) {
       newItems[i].unit_cost =
@@ -128,7 +130,6 @@ class App extends React.Component {
     const formatedDate = moment(payload.date).format('Do MMM, YYYY');
     payload.items = newItems;
     payload.date = formatedDate;
-    console.log(payload);
     delete payload.loading;
     axios
       .post('https://ad-invoice.herokuapp.com/invoice', payload, {
@@ -138,13 +139,10 @@ class App extends React.Component {
       })
       .then(response => {
         this.setState((prevState, props) => {
-          return {
-            loading: false
-          };
+          return initialState;
         });
         const url = response.data.url;
         window.open(url, '_blank');
-        console.log(response);
       })
       .catch(err => {
         this.setState((prevState, props) => {
@@ -165,6 +163,8 @@ class App extends React.Component {
           onDateChange={this.handleDateChange}
           onBillToChange={this.handleBillToChange}
           onTaxChange={this.handleTaxChange}
+          address={this.state.to}
+          invoiceNumber={this.state.number}
         />
         <Items
           fields={this.state.items}

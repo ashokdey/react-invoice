@@ -4,7 +4,12 @@ import DatePicker from '../_Components/DatePicker';
 import Logo from '../../logo.jpg';
 
 const Header = ({
-  dateValue, onDateChange, onBillToChange, onTaxChange,
+  dateValue,
+  onDateChange,
+  onBillToChange,
+  onTaxChange,
+  address,
+  invoiceNumber
 }) => (
   <Grid columns="equal" container>
     <Grid.Column>
@@ -12,6 +17,7 @@ const Header = ({
       <p style={{ marginTop: '2rem' }}>Bill To</p>
       <Form>
         <TextArea
+          value={address}
           onChange={evt => onBillToChange(evt.target.value)}
           placeholder="Who is this invoice to? (*required)"
         />
@@ -27,7 +33,7 @@ const Header = ({
         placeholder="Invoice Number"
       >
         <Icon name="hashtag" />
-        <input />
+        <input value={invoiceNumber} />
       </Input>
       <DatePicker dateValue={dateValue} onDateChange={onDateChange} />
     </Grid.Column>
