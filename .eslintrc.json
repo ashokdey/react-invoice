@@ -1,0 +1,14 @@
+{
+    "extends": "airbnb",
+    "env": {
+      "browser": true,
+      "es6": true,
+      "jest": true,
+      "node": true
+    },
+    "rules": {
+      "import/no-named-as-default": "off",
+      "import/no-named-as-default-member": "off"
+    }
+  }
+  
